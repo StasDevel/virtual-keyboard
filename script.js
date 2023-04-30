@@ -68,8 +68,6 @@
 // }
 // console.log(Object.keys(objOfEngLetters2).length)
 
-let keyboard = document.querySelector(`#keyboard`);
-
 let rowsOfButtons = [
     {
     "Backquote": "`",
@@ -105,28 +103,28 @@ let rowsOfButtons = [
     },
     {
     "CapsLock": "CapsLock",
-    "KeyA": "A",
-    "KeyS": "S",
-    "KeyD": "D",
-    "KeyF": "F",
-    "KeyG": "G",
-    "KeyH": "H",
-    "KeyJ": "J",
-    "KeyK": "K",
-    "KeyL": "L",
+    "KeyA": "a",
+    "KeyS": "s",
+    "KeyD": "d",
+    "KeyF": "f",
+    "KeyG": "g",
+    "KeyH": "h",
+    "KeyJ": "j",
+    "KeyK": "k",
+    "KeyL": "l",
     "Semicolon": ";",
     "Quote": "'",
     "Enter": "Enter"
     },
     {
     "ShiftLeft": "Shift",
-    "KeyZ": "Z",
-    "KeyX": "X",
-    "KeyC": "C",
-    "KeyV": "V",
-    "KeyB": "B",
-    "KeyN": "N",
-    "KeyM": "M",
+    "KeyZ": "z",
+    "KeyX": "x",
+    "KeyC": "c",
+    "KeyV": "v",
+    "KeyB": "b",
+    "KeyN": "n",
+    "KeyM": "m",
     "Comma": ",",
     "Period": ".",
     "Slash": "/",
@@ -145,11 +143,21 @@ let rowsOfButtons = [
     "ArrowRight": "ArrowRight"
     }
 ]
+let body = document.querySelector(`body`);
+
+let innerField = document.createElement(`textarea`);
+innerField.classList.add(`textarea`)
+body.append(innerField)
+
+let keyBoard = document.createElement(`div`);
+keyBoard.classList.add('keyBoard');
+body.append(keyBoard)
+
 
 for (let element of rowsOfButtons) {
     let buttonRow = document.createElement(`div`);
     buttonRow.classList.add(`buttonRow`);
-    keyboard.append(buttonRow)
+    keyBoard.append(buttonRow)
     for (let el in element) {
         let button = document.createElement(`div`);
         button.classList.add(`button`);
