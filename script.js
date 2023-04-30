@@ -99,7 +99,8 @@ let rowsOfButtons = [
     "KeyP": "p",
     "BracketLeft": "[",
     "BracketRight": "]",
-    "Backslash": "\\"
+    "Backslash": "\\",
+    "Delete": "Del"
     },
     {
     "CapsLock": "CapsLock",
@@ -234,7 +235,7 @@ for (let element of rowsOfButtons) {
     buttonRow.classList.add(`buttonRow`);
     keyBoard.append(buttonRow)
     for (let el in element) {
-        var button = document.createElement(`div`);
+        let button = document.createElement(`div`);
         button.classList.add(`button`);
         button.classList.add(el);
         button.innerHTML = element[el];
@@ -256,8 +257,7 @@ for (let element of rowsOfButtons) {
 
 // document.addEventListener(`keydown`, function (e) {
 //     console.log(e.code, e.key)
-// russianButtons[e.code] = e.key
-// console.log(russianButtons)
+
 // })
 
 let turner = [];
@@ -312,7 +312,6 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
     
 })
 
-
 document.onkeyup = function colorChangerOff (e){
     for (let element of keyBoard.children) {
         for (let el of element.children) {
@@ -328,3 +327,78 @@ document.onkeyup = function colorChangerOff (e){
     }
     
 }
+
+//======================================================= Действия Мыши
+
+// for (let element of keyBoard.children) {
+//     for (let el of element.children) {
+//         el.addEventListener(`click`, function func (e) {
+//                 el.style.transform = `scale(0.9)`;
+//                 el.style.boxShadow = `0px 10px 20px 2px rgba(0, 0, 0, 0.25)`;    
+// });
+// el.addEventListener(`click`, function func (e) {
+            
+//     el.style.transform = `scale(1)`;
+//     el.style.boxShadow = `2px 2px 2px 0px rgba(0,0,0,0.3)`;
+
+// })
+//     }
+// }
+
+document.addEventListener(`mousedown`, function func (e) {
+    
+    if ([...e.target.classList].includes(`button`)) {
+        e.target.style.transform = `scale(0.9)`;
+        e.target.style.boxShadow = `0px 10px 20px 2px rgba(0, 0, 0, 0.25)`;
+    }
+
+    if ([...e.target.classList].includes(`button`) && e.target.innerHTML.length <= 1) {
+        innerField.innerHTML += e.target.innerHTML
+    }
+    
+    if ([...e.target.classList].includes(`Enter`)) {
+        innerField.innerHTML += `\n`
+    };
+
+    if ([...e.target.classList].includes(`Tab`)) {
+        innerField.innerHTML += `   `
+    }
+
+    if ([...e.target.classList].includes(`CapsLock`)) {
+            for (let element of keyBoard.children) {
+                for (let el of element.children) {
+                    if (el.innerHTML.length <= 1 && el.innerHTML[0] != el.innerHTML[0].toUpperCase()) {
+                        el.innerHTML = el.innerHTML.toUpperCase();
+                    } else if (el.innerHTML.length <= 1 && el.innerHTML[0] == el.innerHTML[0].toUpperCase()){
+                        el.innerHTML = el.innerHTML.toLowerCase();
+                    }
+                }
+            }
+    }
+
+    if ([...e.target.classList].includes(`Backspace`)) {
+        console.log(innerField.innerHTML.split(``));
+        let arr = innerField.innerHTML.split(``);
+        arr.splice(innerField.selectionStart - 1, 1);
+        innerField.innerHTML = arr.join('');
+    }
+
+    if ([...e.target.classList].includes(`Delete`)) {
+        console.log(innerField.innerHTML.split(``));
+        let arr = innerField.innerHTML.split(``);
+        arr.splice(innerField.selectionStart, 1);
+        innerField.innerHTML = arr.join('');
+    }
+    
+});
+
+document.addEventListener(`mouseup`, function func (e) {
+    if ([...e.target.classList].includes(`button`)) {
+        e.target.style.transform = `scale(1)`;
+        e.target.style.boxShadow = `2px 2px 2px 0px rgba(0,0,0,0.3)`;
+    }
+});
+
+innerField.addEventListener(`click`, (e) => {
+    console.log(innerField.selectionStart)
+})
