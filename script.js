@@ -537,7 +537,7 @@ document.addEventListener('mousedown', (e) => {
     const arr = innerField.innerHTML.split('');
     arr.splice(innerField.selectionStart - 1, 1);
     innerField.innerHTML = arr.join('');
-    innerField.selectionStart = lastPointerPos;
+    innerField.selectionStart = lastPointerPos - 1;
   }
 
   if ([...e.target.classList].includes('Delete') && innerField.selectionStart > 0) {
