@@ -335,7 +335,9 @@ lang.classList.add('lang');
 lang.innerHTML = 'Для переключения языка комбинация: левыe Ctrl + Alt';
 body.append(lang);
 
-localStorage.setItem('checker', `eng`);
+if (localStorage.getItem(`checker`) === null) {
+    localStorage.setItem('checker', `eng`);
+};
 
 for (const element of rowsOfButtons) {
   const buttonRow = document.createElement('div');
@@ -495,6 +497,7 @@ document.addEventListener('keyup', (e) => {
 });
 
 //= ====================================================== Действия Мыши
+let lastPointerPos = 0;
 
 document.addEventListener('mousedown', (e) => {
   if ([...e.target.classList].includes('button')) {
@@ -503,7 +506,11 @@ document.addEventListener('mousedown', (e) => {
   }
 
   if ([...e.target.classList].includes('button') && e.target.innerHTML.length <= 1) {
-    innerField.innerHTML += e.target.innerHTML;
+    var end = innerField.selectionStart;
+	var start = innerField.selectionEnd;
+	var finText = innerField.innerHTML.substring(0, start) + e.target.innerHTML + innerField.innerHTML.substring(end);
+	innerField.innerHTML = finText;
+    innerField.selectionStart = lastPointerPos + 1;
   }
 
   if ([...e.target.classList].includes('Enter')) {
@@ -530,12 +537,14 @@ document.addEventListener('mousedown', (e) => {
     const arr = innerField.innerHTML.split('');
     arr.splice(innerField.selectionStart - 1, 1);
     innerField.innerHTML = arr.join('');
+    innerField.selectionStart = lastPointerPos;
   }
 
   if ([...e.target.classList].includes('Delete') && innerField.selectionStart > 0) {
     const arr = innerField.innerHTML.split('');
     arr.splice(innerField.selectionStart, 1);
     innerField.innerHTML = arr.join('');
+    innerField.selectionStart = lastPointerPos;
   }
 });
 
@@ -543,12 +552,27 @@ document.addEventListener('mouseup', (e) => {
   if ([...e.target.classList].includes('button')) {
     e.target.style.transform = 'scale(1)';
     e.target.style.boxShadow = '2px 2px 2px 0px rgba(0,0,0,0.3)';
-  }
+  };
 });
 
 document.addEventListener('mouseout', (e) => {
   if ([...e.target.classList].includes('button')) {
     e.target.style.transform = 'scale(1)';
     e.target.style.boxShadow = '2px 2px 2px 0px rgba(0,0,0,0.3)';
+    e.target.style.backgroundColor = `#0000005e`;
   }
 });
+
+document.addEventListener('mouseover', (e) => {
+    if ([...e.target.classList].includes('button')) {
+      e.target.style.backgroundColor = `#45ff01`;
+    }
+  });
+
+// Предотвращение слета фокуса с поля ввода
+keyBoard.onmousedown = function(e) {
+    lastPointerPos = innerField.selectionStart;
+    if (document.activeElement === innerField) {
+      e.preventDefault();
+    }
+  };

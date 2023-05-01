@@ -56,9 +56,7 @@ body {
     border-radius: 3px;
 }
 
-.button:hover {
-    background-color: #45ff01;
-}
+
 
 .active {
     transform: scale(0.9);
