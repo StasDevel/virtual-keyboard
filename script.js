@@ -506,11 +506,13 @@ document.addEventListener('mousedown', (e) => {
   }
 
   if ([...e.target.classList].includes('button') && e.target.innerHTML.length <= 1) {
-    var end = innerField.selectionStart;
-	var start = innerField.selectionEnd;
-	var finText = innerField.innerHTML.substring(0, start) + e.target.innerHTML + innerField.innerHTML.substring(end);
-	innerField.innerHTML = finText;
-    innerField.selectionStart = lastPointerPos + 1;
+    innerField.innerHTML += e.target.innerHTML;
+    // var end = innerField.selectionStart;
+	// var start = innerField.selectionEnd;
+	// var finText = innerField.innerHTML.substring(0, start) + e.target.innerHTML + innerField.innerHTML.substring(end);
+	// innerField.innerHTML = finText;
+    // innerField.selectionStart = lastPointerPos + 1;
+    // innerField.focus();
   }
 
   if ([...e.target.classList].includes('Enter')) {
