@@ -335,6 +335,8 @@ lang.classList.add('lang');
 lang.innerHTML = 'Для переключения языка комбинация: левыe Ctrl + Alt';
 body.append(lang);
 
+localStorage.setItem('checker', `eng`);
+
 for (const element of rowsOfButtons) {
   const buttonRow = document.createElement('div');
   buttonRow.classList.add('buttonRow');
