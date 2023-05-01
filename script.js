@@ -310,8 +310,6 @@ let shiftButtonsEng = {
     "Slash": "?"
 }
 
-let checker = `eng`;
-
 
 let body = document.querySelector(`body`);
 
@@ -335,7 +333,7 @@ body.append(info);
 
 let lang = document.createElement(`p`);
 lang.classList.add(`lang`);
-lang.innerHTML = `Для переключения языка комбинация: левыe shiftLeft + alt`;
+lang.innerHTML = `Для переключения языка комбинация: левыe Ctrl + Alt`;
 body.append(lang);
 
 
@@ -353,10 +351,25 @@ for (let element of rowsOfButtons) {
     }
 }
 
+if (localStorage.getItem(`checker`) === `eng`) {
+    for (let element of keyBoard.children) {
+        for (let i = 0; i < element.children.length; i++) { 
+            element.children[i].innerHTML = rowsOfButtonsEng[element.children[i].classList[1]];
+        }
+    }
+
+} else if (localStorage.getItem(`checker`) === `rus`) {
+    for (let element of keyBoard.children) {
+        for (let i = 0; i < element.children.length; i++) { 
+            element.children[i].innerHTML = rowsOfButtonsRus[element.children[i].classList[1]];
+        }
+    }
+
+}
 // document.addEventListener(`keydown`, function (e) {
-//     shiftButtonsRus[e.code] = e.key;
+//     // shiftButtonsRus[e.code] = e.key;
 //     console.log(e.code, e.key)
-//     console.log(shiftButtonsRus)
+//     // console.log(shiftButtonsRus)
 // })
 
 let turner = [];
@@ -379,30 +392,37 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
     if (e.code === 'Tab') {
         e.preventDefault();
         innerField.innerHTML += `   `;
+    };
+
+    if (e.code === 'AltLeft' || e.code === 'AltRight') {
+        e.preventDefault();
     }
 
     // Меняет раскладку
     
     if ((e.code === 'ControlLeft' || e.code === 'AltLeft') && turner.length < 2) {
-        turner.push (e.code)
-    } else if (turner.length >= 2) {
-        turner.splice(0, 1);
-    }
+        turner.push (e.code);
+        setTimeout(function () {
+            turner = [];
+        }, 500)
+    } 
     if (turner[0] === 'ControlLeft' && turner[1] === 'AltLeft')  {
-        if (checker === `rus`) {
+        if (localStorage.getItem(`checker`) === `rus`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     element.children[i].innerHTML = rowsOfButtonsEng[element.children[i].classList[1]];
                 }
             }
-            checker = `eng`;
-        } else if (checker === `eng`) {
+            localStorage.setItem(`checker`, `eng`);
+            // checker = `eng`;
+        } else if (localStorage.getItem(`checker`) === `eng`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     element.children[i].innerHTML = rowsOfButtonsRus[element.children[i].classList[1]];
                 }
             }
-            checker = `rus`;
+            localStorage.setItem(`checker`, `rus`);
+            // checker = `rus`;
         }
         turner = [];
     }
@@ -424,7 +444,7 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
     // Нормальный рабочий обработчик шифтов на изменение символов!!!!!!!
 
     if (e.code === 'ShiftLeft' || e.code === `ShiftRight`) {
-        if (checker == `rus`) {
+        if (localStorage.getItem(`checker`) == `rus`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     if (element.children[i].innerHTML != shiftButtonsRus[element.children[i].classList[1]] && Object.keys(shiftButtonsRus).includes(element.children[i].classList[1])) {
@@ -432,7 +452,7 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
                     }
                 }
             }
-        } else if (checker == `eng`) {
+        } else if (localStorage.getItem(`checker`) == `eng`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     if (element.children[i].innerHTML != shiftButtonsEng[element.children[i].classList[1]] && Object.keys(shiftButtonsEng).includes(element.children[i].classList[1])) {
@@ -465,13 +485,13 @@ document.addEventListener(`keyup`, function colorChangerOff (e){
     // Возвращает буквы в норму, когда отпускается левый или правый шифты
 
     if (e.code === 'ShiftLeft' || e.code === `ShiftRight`) {
-        if (checker == `rus`) {
+        if (localStorage.getItem(`checker`) == `rus`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     element.children[i].innerHTML = rowsOfButtonsRus[element.children[i].classList[1]];
                 }
             }
-        } else if (checker == `eng`) {
+        } else if (localStorage.getItem(`checker`) == `eng`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     element.children[i].innerHTML = rowsOfButtonsEng[element.children[i].classList[1]];

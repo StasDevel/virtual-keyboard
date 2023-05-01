@@ -23,6 +23,8 @@ body {
     height: 250px;
     resize: none;
     margin: 0 auto;
+    font-size: 25px;
+    font-style: 'Arial', sans-serif;
 }
 
 .keyBoard {
