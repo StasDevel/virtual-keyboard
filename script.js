@@ -1,9 +1,3 @@
-let arr;
-console.log(arr);
-arr = []
-arr.push(1);
-console.log(arr);
-
 let rowsOfButtons = [
     {
     "Backquote": "`",
@@ -215,80 +209,6 @@ let rowsOfButtonsRus = {
     "ControlRight": "Ctrl"
     }
 
-// let russianButtons = {
-//     "Backquote": "ё",
-//     "KeyQ": "й",
-//     "KeyW": "ц",
-//     "KeyE": "у",
-//     "KeyR": "к",
-//     "KeyT": "е",
-//     "KeyY": "н",
-//     "KeyU": "г",
-//     "KeyI": "ш",
-//     "KeyO": "щ",
-//     "KeyP": "з",
-//     "BracketLeft": "х",
-//     "BracketRight": "ъ",
-//     "KeyA": "ф",
-//     "KeyS": "ы",
-//     "KeyD": "в",
-//     "KeyF": "а",
-//     "KeyG": "п",
-//     "KeyH": "р",
-//     "KeyJ": "о",
-//     "KeyK": "л",
-//     "KeyL": "д",
-//     "Semicolon": "ж",
-//     "Quote": "э",
-//     "KeyZ": "я",
-//     "KeyX": "ч",
-//     "KeyC": "с",
-//     "KeyV": "м",
-//     "KeyB": "и",
-//     "KeyN": "т",
-//     "KeyM": "ь",
-//     "Comma": "б",
-//     "Period": "ю",
-//     "Slash": "."
-// };
-
-// let engButtons = {
-//     "Backquote": "`",
-//     "KeyQ": "q",
-//     "KeyW": "w",
-//     "KeyE": "e",
-//     "KeyR": "r",
-//     "KeyT": "t",
-//     "KeyY": "y",
-//     "KeyU": "u",
-//     "KeyI": "i",
-//     "KeyO": "o",
-//     "KeyP": "p",
-//     "BracketLeft": "[",
-//     "BracketRight": "]",
-//     "KeyA": "a",
-//     "KeyS": "s",
-//     "KeyD": "d",
-//     "KeyF": "f",
-//     "KeyG": "g",
-//     "KeyH": "h",
-//     "KeyJ": "j",
-//     "KeyK": "k",
-//     "KeyL": "l",
-//     "Semicolon": ";",
-//     "Quote": "'",
-//     "KeyZ": "z",
-//     "KeyX": "x",
-//     "KeyC": "c",
-//     "KeyV": "v",
-//     "KeyB": "b",
-//     "KeyN": "n",
-//     "KeyM": "m",
-//     "Comma": ",",
-//     "Period": ".",
-//     "Slash": "/",
-// };
-
 let shiftButtonsRus = {
     "ShiftLeft": "Shift",
     "Backquote": "Ё",
@@ -442,7 +362,8 @@ for (let element of rowsOfButtons) {
 let turner = [];
 
 document.addEventListener(`keydown`, function colorChangerOn (e){
-    
+    // Анимация кнопок при нажатии (можно улучшить!)
+
     for (let element of keyBoard.children) {
         for (let el of element.children) {
             if ([...el.classList].includes(e.code)) {
@@ -453,14 +374,21 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
         }
     }
 
+    // Настройка таба
+
+    if (e.code === 'Tab') {
+        e.preventDefault();
+        innerField.innerHTML += `   `;
+    }
+
     // Меняет раскладку
     
-    if ((e.code === 'ShiftLeft' || e.code === 'AltLeft') && turner.length < 2) {
+    if ((e.code === 'ControlLeft' || e.code === 'AltLeft') && turner.length < 2) {
         turner.push (e.code)
     } else if (turner.length >= 2) {
         turner.splice(0, 1);
     }
-    if (turner[0] === 'ShiftLeft' && turner[1] === 'AltLeft')  {
+    if (turner[0] === 'ControlLeft' && turner[1] === 'AltLeft')  {
         if (checker === `rus`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
@@ -476,10 +404,7 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
             }
             checker = `rus`;
         }
-
-        console.log(turner)
         turner = [];
-        
     }
     
     // Меняет регистр
@@ -499,16 +424,15 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
     // Нормальный рабочий обработчик шифтов на изменение символов!!!!!!!
 
     if (e.code === 'ShiftLeft' || e.code === `ShiftRight`) {
-        if (checker == `ru`) {
+        if (checker == `rus`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     if (element.children[i].innerHTML != shiftButtonsRus[element.children[i].classList[1]] && Object.keys(shiftButtonsRus).includes(element.children[i].classList[1])) {
-                        console.log(shiftButtonsRus[element.children[i].classList[1]]);
                         element.children[i].innerHTML = shiftButtonsRus[element.children[i].classList[1]];
                     }
                 }
             }
-        } else if (checker == `en`) {
+        } else if (checker == `eng`) {
             for (let element of keyBoard.children) {
                 for (let i = 0; i < element.children.length; i++) { 
                     if (element.children[i].innerHTML != shiftButtonsEng[element.children[i].classList[1]] && Object.keys(shiftButtonsEng).includes(element.children[i].classList[1])) {
@@ -521,7 +445,9 @@ document.addEventListener(`keydown`, function colorChangerOn (e){
     
 })
 
-document.onkeyup = function colorChangerOff (e){
+document.addEventListener(`keyup`, function colorChangerOff (e){
+    // Стили клавиш при поднятии клавиши
+
     for (let element of keyBoard.children) {
         for (let el of element.children) {
             if ([...el.classList].includes(e.code)) {
@@ -535,8 +461,30 @@ document.onkeyup = function colorChangerOff (e){
             
         }
     }
-    
-}
+
+    // Возвращает буквы в норму, когда отпускается левый или правый шифты
+
+    if (e.code === 'ShiftLeft' || e.code === `ShiftRight`) {
+        if (checker == `rus`) {
+            for (let element of keyBoard.children) {
+                for (let i = 0; i < element.children.length; i++) { 
+                    element.children[i].innerHTML = rowsOfButtonsRus[element.children[i].classList[1]];
+                }
+            }
+        } else if (checker == `eng`) {
+            for (let element of keyBoard.children) {
+                for (let i = 0; i < element.children.length; i++) { 
+                    element.children[i].innerHTML = rowsOfButtonsEng[element.children[i].classList[1]];
+                }
+            }
+        }
+    }
+})
+
+
+
+
+
 
 //======================================================= Действия Мыши
 
