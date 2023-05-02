@@ -513,10 +513,12 @@ document.addEventListener('mousedown', (e) => {
 	// innerField.innerHTML = finText;
     // innerField.selectionStart = lastPointerPos + 1;
     // innerField.focus();
+    innerField.focus()
   }
 
   if ([...e.target.classList].includes('Enter')) {
     innerField.innerHTML += '\n';
+    innerField.selectionStart = innerField.innerHTML.length;
   }
 
   if ([...e.target.classList].includes('Tab')) {
@@ -572,9 +574,14 @@ document.addEventListener('mouseover', (e) => {
   });
 
 // Предотвращение слета фокуса с поля ввода
-keyBoard.onmousedown = function(e) {
+// keyBoard.onmousedown = function(e) {
+//     if (document.activeElement === innerField) {
+//       e.preventDefault();
+//     }
+//   };
+
+  innerField.onmousedown = function () {
     lastPointerPos = innerField.selectionStart;
-    if (document.activeElement === innerField) {
-      e.preventDefault();
-    }
-  };
+    console.log(innerField.selectionStart)
+    
+  }
